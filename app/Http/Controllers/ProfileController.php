@@ -73,4 +73,6 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+// Update your login controller's method, e.g., `login` method
+
 }

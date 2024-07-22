@@ -35,7 +35,7 @@
             <ion-icon id="close-icon" name="close" class="text-3xl cursor-pointer absolute top-4 right-4 md:hidden hidden"></ion-icon>
         </div>
         <div class="flex items-center gap-6">
-        <button class="auth-btn bg-blue-900 text-white px-8 py-3 rounded-lg hover:bg-blue-800"><a href="{{ url('activate') }}">Logout</a></button>
+        <button class="auth-btn bg-blue-900 text-white px-8 py-3 rounded-lg hover:bg-blue-800"><a href="{{ url('login') }}">Logout</a></button>
             <ion-icon id="menu-icon" onclick="onToggleMenu()" name="menu" class="text-3xl cursor-pointer md:hidden"></ion-icon>
         </div>
     </nav>

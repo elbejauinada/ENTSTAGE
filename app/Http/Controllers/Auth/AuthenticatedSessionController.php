@@ -44,4 +44,26 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+    public function login(Request $request)
+    {
+        // Validate login input
+        $credentials = $request->only('email', 'password');
+    
+        // Attempt to authenticate the user
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+    
+            // Debugging: Check if user is admin
+            if ($user->is_admin) {
+                return redirect()->route('admin.dashboard');
+            }
+    
+            return redirect()->route('welcome');
+        }
+    
+        // Redirect back with error if authentication fails
+        return redirect()->back()->withErrors(['email' => 'Invalid credentials']);
+    }
+    
+
 }

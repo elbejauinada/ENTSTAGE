@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserActivationController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -10,7 +11,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth','admin', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -26,5 +27,9 @@ Route::get('/activate/{token}', [UserActivationController::class, 'showSetPasswo
 
 // Route to handle the form submission and set the password
 Route::post('/activate/{token}', [UserActivationController::class, 'setPassword'])->name('activate.set_password');
+
+
+
+
 
 require __DIR__.'/auth.php';

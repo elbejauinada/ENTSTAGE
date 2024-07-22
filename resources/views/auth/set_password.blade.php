@@ -5,7 +5,7 @@
             </a>
         </x-slot>
 
-        <form method="POST" action="{{ route('activate.set_password', $token) }}">
+        <form method="POST" action="{{ route('activate.set_password', ['token' => $token]) }}?email={{ urlencode($email) }}">
             @csrf
 
             <div>
