@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    @vite('resources/css/app.css')
-    <title>ENT ENSA Tétouan</title>
+    <title>Consulter les Résultats</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-blue-900 font-sans">
+<body class="bg-white p-6">
 <header class="bg-white">
     <nav class="flex justify-between items-center p-6 mx-auto relative">
         <div>
@@ -68,29 +65,29 @@
 
     document.getElementById('close-icon').addEventListener('click', onToggleMenu);
 </script>
-<footer class="bg-blue-900 text-white py-12">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="mb-8">
-                <img src="{{ asset('images/logo-ensa-white.png') }}" alt="ENSA Logo" class="h-16 mb-4">
-                <p class="text-lg leading-relaxed">Etudiant, enseignant ou personnel, vous pouvez accéder à tous vos services via cette plateforme. Il suffit d'activer votre compte en utilisant votre adresse institutionnelle, saisir un mot de passe.</p>
-            </div>
-            <div class="mb-8">
-                <h3 class="text-lg font-semibold mb-4">Contact us</h3>
-                <p>Avenue de la Palestine Mhanech I, TÉTOUAN</p>
-                <p class="email">ensate@uae.ac.ma</p>
-                <h4 class="text-lg mt-4">05396-88027</h4>
-            </div>
-            <div class="mb-8">
-                <h3 class="text-lg font-semibold mb-4">Follow us</h3>
-                <ul class="social-media flex space-x-4">
-                    <li><a href="https://www.facebook.com/ensa.tetouan.officiel" class="social-icon"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="https://www.instagram.com/ensa_tetouan_officiel/" class="social-icon"><i class="fa fa-instagram"></i></a></li>
-                    <li><a href="https://www.linkedin.com/school/ensa-tetouan/" class="social-icon"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-            </div>
-        </div>
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Mes Résultats</h1>
+
+        @if($results->isEmpty())
+            <p>Aucun résultat trouvé.</p>
+        @else
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b text-left">Matière</th>
+                        <th class="py-2 px-4 border-b text-left">Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($results as $result)
+                        <tr>
+                            <td class="py-2 px-4 border-b">{{ $result->subject->name }}</td>
+                            <td class="py-2 px-4 border-b">{{ $result->grade }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
-</footer>
 </body>
 </html>

@@ -48,4 +48,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function major()
+    {
+        return $this->belongsTo(Major::class, 'major_id');
+    }
 }
