@@ -65,29 +65,54 @@
 
     document.getElementById('close-icon').addEventListener('click', onToggleMenu);
 </script>
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg ">
         <h1 class="text-2xl font-bold mb-4">Mes Résultats</h1>
-
         @if($results->isEmpty())
             <p>Aucun résultat trouvé.</p>
         @else
-            <table class="min-w-full bg-white border border-gray-200">
+            <table class="mt-4 w-full min-w-max table-auto text-left">
                 <thead>
-                    <tr>
-                        <th class="py-2 px-4 border-b text-left">Matière</th>
-                        <th class="py-2 px-4 border-b text-left">Note</th>
+                    <tr  class="py-6 px-6 border-b text-left bg-blue-300 items-center text-center">
+                        <th  >Matière</th>
+                        <th >Note</th>
+                        <th >Mise à jour</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($results as $result)
-                        <tr>
-                            <td class="py-2 px-4 border-b">{{ $result->subject->name }}</td>
-                            <td class="py-2 px-4 border-b">{{ $result->grade }}</td>
+                        <tr class="py-2 px-4 border-b text-center">
+                            <td >{{ $result->subject->name }}</td>
+                            <td >{{ $result->grade }}</td>
+                            <td >{{ $result->created_at }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         @endif
     </div>
+<footer class="relative text-white bg-blue-900 pt-8 pb-6">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="mb-8">
+                <img src="{{ asset('images/logo-ensa-white.png') }}" alt="ENSA Logo" class="h-16 mb-4">
+                <p class="text-lg leading-relaxed">Etudiant, enseignant ou personnel, vous pouvez accéder à tous vos services via cette plateforme. Il suffit d'activer votre compte en utilisant votre adresse institutionnelle, saisir un mot de passe.</p>
+            </div>
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold mb-4">Contact us</h3>
+                <p>Avenue de la Palestine Mhanech I, TÉTOUAN</p>
+                <p class="email">ensate@uae.ac.ma</p>
+                <h4 class="text-lg mt-4">05396-88027</h4>
+            </div>
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold mb-4">Follow us</h3>
+                <ul class="social-media flex space-x-4">
+                    <li><a href="https://www.facebook.com/ensa.tetouan.officiel" class="social-icon"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="https://www.instagram.com/ensa_tetouan_officiel/" class="social-icon"><i class="fa fa-instagram"></i></a></li>
+                    <li><a href="https://www.linkedin.com/school/ensa-tetouan/" class="social-icon"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
