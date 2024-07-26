@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserActivationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ResultController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,36 +14,42 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Profile routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// User activation routes
 Route::get('activate', [UserActivationController::class, 'showActivationForm'])->name('activate.form');
 Route::post('activate', [UserActivationController::class, 'sendActivationEmail'])->name('activate.email');
-
-// Route to handle the token and show the set password form
 Route::get('/activate/{token}', [UserActivationController::class, 'showSetPasswordForm'])->name('activate.token');
-
-// Route to handle the form submission and set the password
 Route::post('/activate/{token}', [UserActivationController::class, 'setPassword'])->name('activate.set_password');
 
+// Result routes
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('results/select', [ResultController::class, 'select'])->name('results.select');
+    Route::get('results/list', [ResultController::class, 'list'])->name('results.list');
+    Route::post('/results/storeOrUpdate', [ResultController::class, 'storeOrUpdate'])->name('results.storeOrUpdate');
+    Route::delete('results/{id}', [ResultController::class, 'destroy'])->name('results.destroy');   
+});
 
-use App\Http\Controllers\ResultController;
-
-// Route for displaying the add results form
-// Show the form for adding results
-Route::get('/results/add_results', [ResultController::class, 'create'])->name('add_results')->middleware(['auth','admin']);
-
-// Handle the form submission to add results
-Route::post('/results/store', [ResultController::class, 'store'])->name('store_results');
-
-// Filter students and subjects based on the selected major
-Route::post('/results/filter', [ResultController::class, 'filterByMajor'])->name('filter_by_major');
 // Route to show the results page for logged-in users
-Route::get('/results/view_results', [ResultController::class, 'showResults'])->name('view_results')->middleware('auth');
+Route::get('/results/view_results', [ResultController::class, 'showStudentGrade'])->name('view_results')->middleware('auth');
 
+use App\Http\Controllers\StudentController;
+
+Route::middleware('auth')->group(function () {
+    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+    Route::get('/students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
+    Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+});
+
+// Admin dashboard route
+Route::get('admin/admin_dashboard', [HomeController::class, 'index'])->middleware(['auth', 'admin']);
 
 require __DIR__.'/auth.php';
-route::get('admin/admin_dashboard',[HomeController::class,'index'])->middleware(['auth','admin']);

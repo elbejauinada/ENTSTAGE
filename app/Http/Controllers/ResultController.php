@@ -3,89 +3,83 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Result;
+use App\Models\Major;
 use App\Models\Subject;
 use App\Models\User;
-use App\Models\Major; // Assuming you have a Major model
+use App\Models\Result;
 
 class ResultController extends Controller
 {
-    /**
-     * Show the form for adding results.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
+    public function select()
     {
-        // Retrieve all majors
-        $majors = Major::all(); 
-        
-        // Retrieve students and subjects based on the default major
-        $students = User::where('usertype', 'user')->get(); 
-        $subjects = Subject::all(); 
-        
-        return view('results.add_results', compact('students', 'subjects', 'majors')); 
+        $majors = Major::all();
+        $subjects = Subject::all();
+        return view('results.select', compact('majors', 'subjects'));
     }
-
-    /**
-     * Handle the form submission to add results.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
+    public function list(Request $request)
     {
-        // Validate the incoming request data
-        $request->validate([
-            'student_id' => 'required|exists:users,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'grade' => 'required|numeric|min:0|max:20', // Adjust rules as needed
-        ]);
-
-        // Create a new result entry in the database
-        Result::create([
-            'user_id' => $request->student_id,
-            'subject_id' => $request->subject_id,
-            'grade' => $request->grade,
-        ]);
-
-        // Redirect back to the form with a success message
-        return redirect()->route('add_results')->with('success', 'Résultat ajouté avec succès.');
-    }
-
-    /**
-     * Filter students and subjects based on the selected major.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
-     */
-    public function filterByMajor(Request $request)
-    {
-        // Validate the incoming request
+        // Validate the request
         $request->validate([
             'major_id' => 'required|exists:majors,id',
+            'subject_id' => 'required|exists:subjects,id',
         ]);
 
-        // Retrieve the selected major
-        $majorId = $request->input('major_id');
+        // Fetch the major and subject
+        $major = Major::findOrFail($request->major_id);
+        $subject = Subject::findOrFail($request->subject_id);
 
-        // Retrieve students and subjects based on the selected major
-        $students = User::where('usertype', 'user')->where('major_id', $majorId)->get();
-        $subjects = Subject::where('major_id', $majorId)->get(); // Assuming you have a major_id in the subjects table
-        
-        // Retrieve all majors for the filter form
-        $majors = Major::all();
-        
-        return view('results.add_results', compact('students', 'subjects', 'majors')); 
+        // Fetch the students and their results for the given major and subject
+        $users = User::where('major_id', $major->id)->get();
+        $results = Result::where('subject_id', $subject->id)->get();
+
+        // Pass the data to the view
+        return view('results.list', compact('major', 'subject', 'users', 'results'));
     }
-        // Show student's results
-        public function showResults()
-        {
-            $userId = auth()->user()->id; // Get the current logged-in user ID
-            $results = Result::where('user_id', $userId)
-                              ->with('subject') // Eager load subjects
-                              ->get();
-            
-            return view('results.view_results', compact('results'));
+    public function storeOrUpdate(Request $request)
+    {
+        $request->validate([
+            'subject_id' => 'required|exists:subjects,id',
+            'grades' => 'required|array',
+            'grades.*' => ['numeric', 'min:0', 'max:20'],
+        ]);
+    
+        $subjectId = $request->input('subject_id');
+        $grades = $request->input('grades');
+    
+        foreach ($grades as $userId => $grade) {
+            Result::updateOrCreate(
+                ['subject_id' => $subjectId, 'user_id' => $userId],
+                ['grade' => $grade]
+            );
         }
-}
+    
+        return redirect()->route('results.list')->with('success', 'Grades updated successfully.');
+    }
+    
+    
+    public function destroy($id)
+    {
+        try {
+            $result = Result::findOrFail($id);
+            $result->delete();
+            return redirect()->back()->with('success', 'Le résultat a été supprimé avec succès.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->back()->with('error', 'Erreur : Résultat introuvable.');
+        }
+    }
+
+    public function showStudentGrades($user_id, $subject_id)
+{
+    // Récupérer les résultats pour l'étudiant et la matière spécifiée
+    $results = Result::where('user_id', $user_id)
+                     ->where('subject_id', $subject_id)
+                     ->get();
+
+    // Récupérer les informations de l'étudiant et de la matière
+    $student = User::findOrFail($student_id);
+    $subject = Subject::findOrFail($subject_id);
+
+    return view('results.view_results', compact('results', 'user_id', 'subject'));
+}   
+} 
+

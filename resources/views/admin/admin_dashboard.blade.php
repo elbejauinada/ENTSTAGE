@@ -15,7 +15,10 @@
         <div id="nav-links" class="nav-links fixed top-0 left-0 w-full h-full bg-white hidden flex-col justify-center items-center z-10 md:relative md:flex md:flex-row md:items-center md:gap-[4vw] md:bg-transparent md:h-auto md:w-auto">
             <ul class="flex flex-col md:flex-row md:items-center md:gap-[4vw] gap-8">
                 <li>
-                    <a class="hover:text-gray-500" href="{{ route('add_results') }}">Ajouter les résultats</a>
+                    <a class="hover:text-gray-500" href="{{ route('results.select') }}">Ajouter les résultats</a>
+                </li>
+                <li>
+                    <a class="hover:text-gray-500" href="{{ route('results.select') }}">Gestion des étudiants</a>
                 </li>
             </ul>
             <ion-icon id="close-icon" name="close" class="text-3xl cursor-pointer absolute top-4 right-4 md:hidden hidden"></ion-icon>

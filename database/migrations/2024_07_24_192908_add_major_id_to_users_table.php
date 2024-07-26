@@ -13,8 +13,9 @@ class AddMajorIdToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('major_id')->constrained()->onDelete('set null'); // Associate with major
-        });
+            $table->unsignedBigInteger('major_id')->nullable(); // Ensure this is unsignedBigInteger
+            $table->foreign('major_id')->references('id')->on('majors')->onDelete('set null'); // Correct foreign key constraint
+            });
     }
 
     /**
