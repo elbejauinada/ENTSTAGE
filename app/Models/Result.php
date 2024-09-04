@@ -1,5 +1,6 @@
 <?php
 
+// In Result.php (Model)
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,24 +10,7 @@ class Result extends Model
 {
     use HasFactory;
 
-    // Définir la table associée au modèle
-    protected $table = 'results';
+    protected $fillable = ['user_id', 'subject_id', 'grade'];
 
-    // Définir les attributs mass assignable
-    protected $fillable = [
-        'user_id',
-        'subject_id',
-        'grade',
-    ];
-
-    // Définir les relations, si nécessaire
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class, 'subject_id');
-    }
+    // Define relationships if needed
 }

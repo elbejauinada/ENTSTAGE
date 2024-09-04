@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,11 +20,11 @@ class User extends Authenticatable
         'email',
         'password',
         'birthday',
-        'major',
+        'major_id',  // Ensure this column exists in your database
         'photo',
-        'usertype'
+        'usertype',
     ];
-    
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -37,19 +36,32 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',  // This cast is correct if you're using Laravel's hashed attribute casting
+    ];
+
+    /**
+     * Get the major that the user belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function major()
     {
         return $this->belongsTo(Major::class, 'major_id');
+    }
+
+    /**
+     * Get the results associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function results()
+    {
+        return $this->hasMany(Result::class);
     }
 }
