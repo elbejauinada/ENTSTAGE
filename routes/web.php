@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResultsController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\StudentResultsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 
@@ -60,6 +61,9 @@ Route::post('/students', [StudentController::class, 'store'])->name('students.st
 Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
 Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
 Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+Route::get('/students/results', [StudentResultsController::class, 'index'])->name('students.results');
+
 // Admin dashboard route
 Route::get('admin/admin_dashboard', [HomeController::class, 'index'])->name('admin.admin_dashboard')->middleware(['auth', 'admin']);
 

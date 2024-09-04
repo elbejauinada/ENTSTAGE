@@ -13,4 +13,8 @@ class Result extends Model
     protected $fillable = ['user_id', 'subject_id', 'grade'];
 
     // Define relationships if needed
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }

@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="hover:text-gray-500"  >Mes resultats</a>
+                    <a class="hover:text-gray-500" href="{{ route('student.results') }}" >Mes resultats</a>
                 </li>
                 <li>
                     <a class="hover:text-gray-500" href="#">Contact us</a>

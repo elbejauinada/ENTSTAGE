@@ -96,12 +96,13 @@
 
                     <div class="bg-gray-100 p-4 rounded-lg shadow-md">
                         <p class="text-lg font-semibold">Birthday</p>
-                        <p class="text-gray-600">{{ $user->birthday ? $user->birthday->format('F j, Y') : 'Not set' }}</p>
+                        <p class="text-gray-600">{{ $user->birthday ? $user->birthday : 'Not set' }}</p>
                     </div>
 
                     <div class="bg-gray-100 p-4 rounded-lg shadow-md">
                         <p class="text-lg font-semibold">Major</p>
-                        <p class="text-gray-600">{{ $user->major }}</p>
+                        <p class="text-gray-600">{{ $user->major ? $user->major->name : 'Not set' }}</p>
+
                     </div>
                 </div>
             </div>
