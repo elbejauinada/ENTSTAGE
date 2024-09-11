@@ -9,8 +9,8 @@
 <body class="bg-gray-100">
 <header class="bg-white">
     <nav class="flex justify-between items-center p-6 mx-auto relative">
-        <div>
-            <img class="w-40" src="{{ URL('images/logo-ensa.png')}}" alt="ENSA Logo">
+    <div>
+           <a href="{{ route('admin.admin_dashboard') }}" ><img class="w-40" src="{{ URL('images/logo-ensa.png')}}" alt="ENSA Logo"></a>
         </div>
         <div id="nav-links" class="nav-links fixed top-0 left-0 w-full h-full bg-white hidden flex-col justify-center items-center z-10 md:relative md:flex md:flex-row md:items-center md:gap-[4vw] md:bg-transparent md:h-auto md:w-auto">
             <ul class="flex flex-col md:flex-row md:items-center md:gap-[4vw] gap-8">

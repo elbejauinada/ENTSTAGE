@@ -68,6 +68,56 @@
 
     document.getElementById('close-icon').addEventListener('click', onToggleMenu);
 </script>
+<section class="min-h-28 bg-cover bg-center h-screen text-white" style="background-image: url('{{ URL('images/ensatetouan.png') }}');">
+        <div class="authentification flex flex-col items-center justify-center h-screen">
+            <h1 class="text-4xl font-bold mb-6">ENT - ENSA Tétouan</h1>
+            <p class="text-lg text-center mb-8 px-6">Etudiant, enseignant ou personnel, vous pouvez accèder à tous vos services via cette plateforme, il suffit d'activer votre compte en utilisant votre adresse institutionnelle, saisir un mot de passe.</p>
+        </div>
+    </section>
+
+    <section class="min-h-28 bg-gray-100 py-12">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="statistics bg-white p-6 rounded-lg shadow-md text-center">
+            <span class="material-symbols-rounded text-4xl block mb-2">engineering</span>
+            <span class="num text-5xl font-bold block mb-2" data-val="7">000</span>
+            <span class="text text-lg font-semibold block">Filières</span>
+        </div>
+        <div class="statistics bg-white p-6 rounded-lg shadow-md text-center">
+            <span class="material-symbols-rounded text-4xl block mb-2">school</span>
+            <span class="num text-5xl font-bold block mb-2" data-val="94">000</span>
+            <span class="text text-lg font-semibold block">Professeurs</span>
+        </div>
+        <div class="statistics bg-white p-6 rounded-lg shadow-md text-center">
+            <span class="material-symbols-rounded text-4xl block mb-2">groups</span>
+            <span class="num text-5xl font-bold block mb-2" data-val="1409">000</span>
+            <span class="text text-lg font-semibold block">Étudiants</span>
+        </div>
+        <div class="statistics bg-white p-6 rounded-lg shadow-md text-center">
+            <span class="material-symbols-rounded text-4xl block mb-2">work</span>
+            <span class="num text-5xl font-bold block mb-2" data-val="494">000</span>
+            <span class="text text-lg font-semibold block">Stages PFE</span>
+        </div>
+    </div>
+</section>
+<script>
+    let valueDisplays=document.querySelectorAll(".num ");
+    let interval=5000;
+valueDisplays.forEach((valueDisplays)=>{
+    let startValue=0;
+    let endValue=parseInt(valueDisplays.getAttribute("data-val"));
+    let duration=Math.floor(interval/endValue);
+    let counter=setInterval(function(){
+        startValue+=1
+        valueDisplays.textContent=startValue;
+        if(startValue==endValue){
+            clearInterval(counter);
+        }
+    },duration);
+
+
+});
+</script>
+
 <footer class="bg-blue-900 text-white py-12">
     <div class="max-w-7xl mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -92,5 +142,7 @@
         </div>
     </div>
 </footer>
+
+
 </body>
 </html>

@@ -35,34 +35,34 @@ Route::post('/activate/{token}', [UserActivationController::class, 'setPassword'
 
 
 
-Route::get('/results/select', [ResultsController::class, 'select'])->name('results.select');
+Route::middleware(['admin'])->group(function () {
+    
+    // Results routes
+    Route::get('/results/select', [ResultsController::class, 'select'])->name('results.select');
+    Route::get('/results/{user}/edit', [ResultsController::class, 'edit'])->name('results.edit');
+    Route::put('/results/{user}', [ResultsController::class, 'update'])->name('results.update');
+    Route::delete('/results/{user}', [ResultsController::class, 'destroy'])->name('results.destroy');
 
-Route::get('/results/{user}/edit', [ResultsController::class, 'edit'])->name('results.edit');
-Route::put('/results/{user}', [ResultsController::class, 'update'])->name('results.update');
-Route::delete('/results/{user}', [ResultsController::class, 'destroy'])->name('results.destroy');
+    // Majors routes
+    Route::get('/manage', [MajorController::class, 'manage'])->name('majors.manage');
+    Route::post('/majors', [MajorController::class, 'store'])->name('majors.store');
+    Route::put('/majors/{id}', [MajorController::class, 'update'])->name('majors.update');
+    Route::delete('/majors/{id}', [MajorController::class, 'destroy'])->name('majors.destroy');
+    Route::post('/subjects', [MajorController::class, 'storeSubject'])->name('subjects.store');
+    Route::put('/subjects/{id}', [MajorController::class, 'updateSubject'])->name('subjects.update');
+    Route::delete('/subjects/{id}', [MajorController::class, 'destroySubject'])->name('subjects.destroy');
 
+    // Subjects resource route
+    Route::resource('subjects', SubjectController::class);
 
-Route::get('/manage', [MajorController::class, 'manage'])->name('majors.manage');
-
-Route::post('/majors', [MajorController::class, 'store'])->name('majors.store');
-Route::put('/majors/{id}', [MajorController::class, 'update'])->name('majors.update');
-Route::delete('/majors/{id}', [MajorController::class, 'destroy'])->name('majors.destroy');
-
-Route::post('/subjects', [MajorController::class, 'storeSubject'])->name('subjects.store');
-Route::put('/subjects/{id}', [MajorController::class, 'updateSubject'])->name('subjects.update');
-Route::delete('/subjects/{id}', [MajorController::class, 'destroySubject'])->name('subjects.destroy');
-
-
-// Routes for SubjectController
-Route::resource('subjects', SubjectController::class);
-
-
-Route::get('/students', [StudentController::class, 'index'])->name('students.index');
-Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-Route::post('/students', [StudentController::class, 'store'])->name('students.store');
-Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
-Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
-Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+    // Students routes
+    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+    Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+    Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+});
 
 Route::get('/students/results', [StudentResultsController::class, 'index'])->name('students.results');
 
