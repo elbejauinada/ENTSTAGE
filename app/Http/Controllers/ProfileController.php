@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Major;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -74,6 +75,13 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
-// Update your login controller's method, e.g., `login` method
+    public function showProfile()
+    {
+        $user = auth()->user();
+        $majors = Major::all(); // Assuming you have a Major model
+    
+        return view('profile', compact('user', 'majors'));
+    }
+
 
 }

@@ -19,12 +19,12 @@
         <div id="nav-links" class="nav-links fixed top-0 left-0 w-full h-full bg-white hidden flex-col justify-center items-center z-10 md:relative md:flex md:flex-row md:items-center md:gap-[4vw] md:bg-transparent md:h-auto md:w-auto">
             <ul class="flex flex-col md:flex-row md:items-center md:gap-[4vw] gap-8">
                 <li>
-                    <a href="{{ route('profile.edit') }}" class="hover:text-gray-500 {{ request()->routeIs('profile.edit') ? 'text-gray-500' : '' }}">
+                    <a href="{{ route('profile.show') }}" class="hover:text-gray-500 {{ request()->routeIs('profile.show') ? 'text-gray-500' : '' }}">
                         {{ __('Profile') }}
                     </a>
                 </li>
                 <li>
-                    <a class="hover:text-gray-500" href="{{ route('student.results') }}" >Mes resultats</a>
+                    <a class="hover:text-gray-500" href="{{ route('students.results') }}" >Mes resultats</a>
                 </li>
                 <li>
                     <a class="hover:text-gray-500" href="#">Contact us</a>

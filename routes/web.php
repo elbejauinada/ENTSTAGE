@@ -19,11 +19,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Profile routes
-Route::middleware('auth')->group(function () {
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    Route::get('/profile', [ProfileController::class, 'showMajors']);
+
+
 
 // User activation routes
 Route::get('activate', [UserActivationController::class, 'showActivationForm'])->name('activate.form');
@@ -63,6 +65,9 @@ Route::put('/students/{id}', [StudentController::class, 'update'])->name('studen
 Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
 
 Route::get('/students/results', [StudentResultsController::class, 'index'])->name('students.results');
+
+Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile.show');
+Route::get('/students/pdf', [StudentController::class, 'exportPDF'])->name('students.pdf');
 
 // Admin dashboard route
 Route::get('admin/admin_dashboard', [HomeController::class, 'index'])->name('admin.admin_dashboard')->middleware(['auth', 'admin']);

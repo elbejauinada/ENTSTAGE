@@ -26,93 +26,97 @@
             </ul>
             <ion-icon id="close-icon" name="close" class="text-3xl cursor-pointer absolute top-4 right-4 md:hidden hidden"></ion-icon>
         </div>
+
         <div class="flex items-center gap-6">
-            <ion-icon id="menu-icon" onclick="onToggleMenu()" name="menu" class="text-3xl cursor-pointer md:hidden"></ion-icon>
-        </div>
+
+    <!-- Logout Button -->
+    <form method="POST" action="{{ route('logout') }}" class="inline">
+        @csrf
+        <button type="submit" class="auth-btn bg-blue-900 text-white px-8 py-3 rounded-lg hover:bg-blue-800">
+            Logout
+        </button>
+    </form>
+
+    <ion-icon id="menu-icon" onclick="onToggleMenu()" name="menu" class="text-3xl cursor-pointer md:hidden"></ion-icon>
+</div>
+
     </nav>
 </header>
 
 <script>
     function onToggleMenu() {
         const navLinks = document.getElementById('nav-links');
-        const menuIcon = document.getElementById('menu-icon');
-        const closeIcon = document.getElementById('close-icon');
-
-        if (menuIcon.name === 'menu') {
-            menuIcon.name = 'close';
-            navLinks.classList.remove('hidden');
-            navLinks.classList.add('flex');
-            closeIcon.classList.remove('hidden');
-        } else {
-            menuIcon.name = 'menu';
-            navLinks.classList.add('hidden');
-            navLinks.classList.remove('flex');
-            closeIcon.classList.add('hidden');
-        }
+        navLinks.classList.toggle('hidden');
+        navLinks.classList.toggle('flex');
     }
-
-    document.getElementById('close-icon').addEventListener('click', onToggleMenu);
 </script>
-    <div class="container mx-auto p-8">
-        <h1 class="text-2xl font-bold mb-4">Manage Students</h1>
 
-        <!-- Button to Add a New Student -->
-        <a href="{{ route('students.create') }}" class="bg-green-500 text-white px-4 py-2 rounded mb-6 inline-block">Add Student</a>
+<div class="container mx-auto p-8">
+    <h1 class="text-2xl font-bold mb-4">Manage Students</h1>
 
-        <!-- Form to Select Major -->
-        <form action="{{ route('students.index') }}" method="GET" class="mb-6">
-            <div class="mb-4">
-                <label for="major" class="block text-gray-700">Select Major:</label>
-                <select name="major_id" id="major" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                    <option value="">Choose a Major</option>
-                    @foreach($majors as $major)
-                        <option value="{{ $major->id }}" {{ request('major_id') == $major->id ? 'selected' : '' }}>{{ $major->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">List Students</button>
-        </form>
+    <a href="{{ route('students.create') }}" class="bg-green-500 text-white px-4 py-2 rounded mb-6 inline-block">Add Student</a>
 
-        <!-- Display Students if a Major is Selected -->
-        @if(request('major_id'))
-            @if(!empty($students))
-                <div class="mt-6">
-                    <h2 class="text-xl font-bold mb-4">
-                        Students in {{ optional($majors->firstWhere('id', request('major_id')))->name ?? 'Unknown Major' }}
-                    </h2>
+    <!-- Form to Select Major -->
+    <form action="{{ route('students.index') }}" method="GET" class="mb-6">
+        <div class="mb-4">
+            <label for="major" class="block text-gray-700">Select Major:</label>
+            <select name="major_id" id="major" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                <option value="">Choose a Major</option>
+                @foreach($majors as $major)
+                    <option value="{{ $major->id }}" {{ request('major_id') == $major->id ? 'selected' : '' }}>{{ $major->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">List Students</button>
+    </form>
 
-                    <table class="min-w-full bg-white border border-gray-200">
-                        <thead>
+    <!-- Display Students if a Major is Selected -->
+    @if(request('major_id'))
+        @if($students->isNotEmpty())
+            <div class="mt-6">
+                <h2 class="text-xl font-bold mb-4">
+                    Students in {{ optional($majors->firstWhere('id', request('major_id')))->name ?? 'Unknown Major' }}
+                </h2>
+
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Birthday</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($students as $student)
                             <tr>
-                                <th class="py-2 px-4 border-b">Name</th>
-                                <th class="py-2 px-4 border-b">Email</th>
-                                <th class="py-2 px-4 border-b">Birthday</th>
-                                <th class="py-2 px-4 border-b">Actions</th>
+                                <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $student->name }}</td>
+                                <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $student->email }}</td>
+                                <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $student->birthday }}</td>
+                                <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <a href="{{ route('students.edit', $student->id) }}" class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Edit</a>
+                                    <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this student?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($students as $student)
-                                <tr>
-                                    <td class="py-2 px-4 border-b">{{ $student->name }}</td>
-                                    <td class="py-2 px-4 border-b">{{ $student->email }}</td>
-                                    <td class="py-2 px-4 border-b">{{ $student->birthday }}</td>
-                                    <td class="py-2 px-4 border-b">
-                                        <a href="{{ route('students.edit', $student->id) }}" class="bg-yellow-500 text-white px-4 py-1 rounded">Edit</a>
-                                        <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <p class="mt-6">No students found for the selected major.</p>
-            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <p class="mt-6">No students found for the selected major.</p>
         @endif
-    </div>
+    @endif
+    @if(request('major_id') && $students->isNotEmpty())
+    <a href="{{ route('students.pdf', ['major_id' => request('major_id')]) }}" class="bg-green-500 text-white px-4 py-2 rounded mb-6 inline-block">
+        Download as PDF
+    </a>
+@endif
+
+
+</div>
 </body>
 </html>

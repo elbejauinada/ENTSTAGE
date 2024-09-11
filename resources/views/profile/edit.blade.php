@@ -16,12 +16,14 @@
 <header class="bg-white">
     <nav class="flex justify-between items-center p-6 mx-auto relative">
         <div>
-            <a href="{{ route('dashboard') }}"><img class="w-40" src="{{ URL('images/logo-ensa.png') }}" alt="ENSA Logo">
+            <a href="{{ route('dashboard') }}">
+                <img class="w-40" src="{{ URL('images/logo-ensa.png') }}" alt="ENSA Logo">
+            </a>
         </div>
         <div id="nav-links" class="nav-links fixed top-0 left-0 w-full h-full bg-white hidden flex-col justify-center items-center z-10 md:relative md:flex md:flex-row md:items-center md:gap-[4vw] md:bg-transparent md:h-auto md:w-auto">
             <ul class="flex flex-col md:flex-row md:items-center md:gap-[4vw] gap-8">
                 <li>
-                    <a href="{{ route('profile.edit') }}" class="hover:text-gray-500 {{ request()->routeIs('profile.edit') ? 'text-gray-500' : '' }}">
+                    <a href="{{ route('profile.show') }}" class="hover:text-gray-500 {{ request()->routeIs('profile.edit') ? 'text-gray-500' : '' }}">
                         Profile
                     </a>
                 </li>
@@ -35,12 +37,12 @@
             <ion-icon id="close-icon" name="close" class="text-3xl cursor-pointer absolute top-4 right-4 md:hidden hidden"></ion-icon>
         </div>
         <div class="flex items-center gap-6">
-        <form method="POST" action="{{ route('logout') }}" class="inline">
-        @csrf
-        <button type="submit" class="auth-btn bg-blue-900 text-white px-8 py-3 rounded-lg hover:bg-blue-800">
-            Logout
-        </button>
-    </form>
+            <form method="POST" action="{{ route('logout') }}" class="inline">
+                @csrf
+                <button type="submit" class="auth-btn bg-blue-900 text-white px-8 py-3 rounded-lg hover:bg-blue-800">
+                    Logout
+                </button>
+            </form>
 
             <ion-icon id="menu-icon" onclick="onToggleMenu()" name="menu" class="text-3xl cursor-pointer md:hidden"></ion-icon>
         </div>
@@ -99,12 +101,22 @@
                         <p class="text-gray-600">{{ $user->birthday ? $user->birthday : 'Not set' }}</p>
                     </div>
 
-                    <div class="bg-gray-100 p-4 rounded-lg shadow-md">
-                        <p class="text-lg font-semibold">Major</p>
-                        <p class="text-gray-600">{{ $user->major ? $user->major->name : 'Not set' }}</p>
+                    <div class="mb-4">
+    <p class="text-lg font-semibold">Major</p>
+    <p class="text-gray-600">
+        @foreach($majors as $major)
+            @if($student->major_id == $major->id)
+                {{ $major->name }}
+            @endif
+        @endforeach
 
-                    </div>
-                </div>
+        <!-- Fallback if no major matches -->
+        @if(!$majors->contains('id', $student->major_id))
+            Not set
+        @endif
+    </p>
+</div>
+
             </div>
         </div>
 
@@ -149,6 +161,7 @@
         </div>
     </div>
 </main>
+
 <footer class="bg-white text-blue-900 py-12">
     <div class="max-w-7xl mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -162,18 +175,18 @@
                 <p class="email">ensate@uae.ac.ma</p>
                 <h4 class="text-lg mt-4">05396-88027</h4>
             </div>
-            <div class="mb-8">
-                <h3 class="text-lg font-semibold mb-4">Follow us</h3>
-                <ul class="social-media flex space-x-4">
-                    <li><a href="https://www.facebook.com/ensa.tetouan.officiel" class="social-icon"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="https://www.instagram.com/ensa_tetouan_officiel/" class="social-icon"><i class="fa fa-instagram"></i></a></li>
-                    <li><a href="https://www.linkedin.com/school/ensa-tetouan/" class="social-icon"><i class="fa fa-linkedin"></i></a></li>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Social Media</h3>
+                <ul class="flex space-x-6">
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800"><i class="fa fa-facebook fa-2x"></i></a></li>
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800"><i class="fa fa-twitter fa-2x"></i></a></li>
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800"><i class="fa fa-linkedin fa-2x"></i></a></li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
+
 </body>
 </html>
-
 

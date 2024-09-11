@@ -50,10 +50,11 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function major()
-    {
-        return $this->belongsTo(Major::class, 'major_id');
-    }
+// In User.php model
+public function major()
+{
+    return $this->belongsTo(Major::class, 'major_id');
+}
 
     /**
      * Get the results associated with the user.
