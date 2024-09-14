@@ -71,6 +71,7 @@
         <!-- Profile Information Section -->
         <div class="bg-white p-6 border  rounded-lg shadow-lg mb-8">
             <h1 class="text-3xl font-bold mb-6 text-center">Profile Information</h1>
+            
 
             <div class="mb-4 text-center">
                 <h2 class="text-xl font-semibold mb-2">Name</h2>
@@ -98,7 +99,8 @@
         </div>
 
         <!-- Password Update Section -->
-        <div class="bg-gray-50 p-6 rounded-lg shadow-lg">
+        <div  class="max-w-3xl mx-auto">
+         <div class="bg-white p-6 border  rounded-lg shadow-lg mb-8">
             <h2 class="text-2xl font-bold mb-6 text-center">Update Password</h2>
 
             <form method="POST" action="/profile/update-password" class="space-y-6">
@@ -135,12 +137,13 @@
                     </button>
                 </div>
             </form>
+            </div>
         </div>
     </div>
 </main>
 
 <footer class="bg-blue-900 text-white py-12">
-    <div class="max-w-7xl mx-auto px-4">
+    <div class="max-w-6xl mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="mb-8 text-center">
                 <img src="{{ asset('images/logo-ensa-white.png') }}" alt="ENSA Logo" class="h-16 mb-4 mx-auto">

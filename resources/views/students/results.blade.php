@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.0.0/dist/tailwind.min.css" rel="stylesheet">
 
 </head>
-<body class="bg-gray-100 font-sans">
+<body class=" font-sans min-h-screen flex flex-col">
 
 <header class="bg-white">
     <nav class="flex justify-between items-center p-6 mx-auto relative">
@@ -73,7 +73,7 @@
     document.getElementById('close-icon').addEventListener('click', onToggleMenu);
 </script>
 
-<main class="py-8">
+<main class="flex-grow py-8">
     <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold mb-6">Mes resultats</h1>
 
@@ -101,6 +101,7 @@
         @endif
     </div>
 </main>
+
 
 </body>
 </html>

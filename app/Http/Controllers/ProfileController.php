@@ -81,7 +81,9 @@ class ProfileController extends Controller
         $majors = Major::all(); // Assuming you have a Major model
     
         return view('profile', compact('user', 'majors'));
+
     }
+    
 
 
 }

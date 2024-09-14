@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Major;
 use Illuminate\Http\Request;
 use PDF;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -34,21 +35,25 @@ class StudentController extends Controller
     }
 
     // Store a newly created student in storage
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'major_id' => 'required|exists:majors,id',
-            // add other fields you need like 'anniversary'
-        ]);
+// Store a newly created student in storage
+public function store(Request $request)
+{
+    // Validate the input except for the password
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'major_id' => 'required|exists:majors,id',
+    ]);
 
-        $validated['usertype'] = 'user'; // Make sure the user type is set to student
-        User::create($validated);
-        $majors = Major::all(); // Retrieve all majors
+    // Add usertype and set the default password separately
+    $validated['usertype'] = 'user'; // Set usertype to 'user'
+    $validated['password'] = Hash::make('default-password'); // Set a default hashed password
 
-        return redirect()->route('students.index')->with('success', 'Student created successfully!');
-    }
+    // Create the user
+    User::create($validated);
+
+    return redirect()->route('students.index')->with('success', 'Student created successfully!');
+}
 
     // Show the form for editing the specified student
     public function edit($id)
@@ -67,7 +72,6 @@ class StudentController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'major_id' => 'required|exists:majors,id',
-            // add other fields you need
         ]);
 
         $student->update($validated);
